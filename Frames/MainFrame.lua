@@ -118,6 +118,7 @@ end
 
 ---@class MPLM_MainFrame : PortraitFrameFlatTemplate
 ---@field Filter WowStyle1DropdownTemplate
+---@field ResetFilterButton IconButtonTemplate
 ---@field ResizeButton PanelResizeButtonTemplate
 ---@field Stat1Search WowStyle1DropdownTemplate
 ---@field Stat2Search WowStyle1DropdownTemplate
@@ -223,6 +224,7 @@ function MPLM_MainFrameMixin:UpdateMatrix()
 end
 
 function MPLM_MainFrameMixin:SetupFilterDropdown()
+
     local function GetClassFilter()
         local filterClassID, filterSpecID = EJ_GetLootFilter();
         return filterClassID;
@@ -242,7 +244,16 @@ function MPLM_MainFrameMixin:SetupFilterDropdown()
         self:DoScan()
     end
 
+    local function ResetFilter()
+        local _, playerClassId = UnitClassBase("player")
+        local playerSpecId = GetSpecializationInfo(GetSpecialization())
+        SetClassAndSpecFilter(playerClassId, playerSpecId)
+        self.Filter:GenerateMenu()
+    end
+
     ClassMenu.InitClassSpecDropdown(self.Filter, GetClassFilter, GetSpecFilter, SetClassAndSpecFilter);
+    self.ResetFilterButton:SetOnClickHandler(ResetFilter);
+    self.ResetFilterButton:SetTooltipInfo(nil, L["Reset filter to your current class/spec."]);
 end
 
 function MPLM_MainFrameMixin:SetupStatSearchDropdown()

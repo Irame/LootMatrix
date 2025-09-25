@@ -141,14 +141,26 @@
             </Frame>
             <DropdownButton parentKey="SlotSelect" inherits="WowStyle1DropdownTemplate">
                 <Anchors>
-                    <Anchor point="LEFT" relativeKey="$parent.Stat2Search" relativePoint="RIGHT" x="250"/>
+                    <Anchor point="LEFT" relativeKey="$parent.Stat2Search" relativePoint="RIGHT" x="230"/>
                 </Anchors>
             </DropdownButton>
             <DropdownButton parentKey="Filter" inherits="WowStyle1DropdownTemplate">
                 <Anchors>
-                    <Anchor point="TOPRIGHT" x="-24" y="-35" />
+                    <Anchor point="TOPRIGHT" x="-40" y="-35" />
                 </Anchors>
             </DropdownButton>
+            <Button parentKey="ResetFilterButton" inherits="IconButtonTemplate">
+                <KeyValues>
+                    <KeyValue key="iconAtlas" value="talents-button-undo" type="string"/>
+                    <KeyValue key="useAtlasSize" value="true" type="boolean"/>
+                    <KeyValue key="useIconAsHighlight" value="true" type="boolean"/>
+                    <KeyValue key="tooltipTextColor" value="HIGHLIGHT_FONT_COLOR" type="global"/>
+                </KeyValues>
+                <Size x="20" y="20"/>
+                <Anchors>
+                    <Anchor point="LEFT" relativeKey="$parent.Filter" relativePoint="RIGHT" x="5"/>
+                </Anchors>
+            </Button>
             <Button parentKey="ResizeButton" inherits="PanelResizeButtonTemplate">
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
