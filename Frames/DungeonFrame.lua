@@ -1,4 +1,4 @@
----@class MPLM_Private
+---@class LM_Private
 local private = select(2, ...)
 
 ---@class DungeonInfo : RowInfo
@@ -8,14 +8,14 @@ local private = select(2, ...)
 ---@field image string
 ---@field mapId integer
 
----@class MPLM_DungeonHeader : MPLM_RowHeader
+---@class LM_DungeonHeader : LM_RowHeader
 ---@field Image Texture
 ---@field Label FontString
 ---@field DungeonHighlight Texture
-MPLM_DungeonHeaderMixin = {}
+LM_DungeonHeaderMixin = {}
 
 ---@param dungeonInfo DungeonInfo
-function MPLM_DungeonHeaderMixin:Init(dungeonInfo)
+function LM_DungeonHeaderMixin:Init(dungeonInfo)
     self.dungeonInfo = dungeonInfo
     self.Image:SetTexture(dungeonInfo.image)
 
@@ -26,32 +26,32 @@ function MPLM_DungeonHeaderMixin:Init(dungeonInfo)
     self.Label:SetText(dungeonName)
 end
 
-function MPLM_DungeonHeaderMixin:OnSizeChanged(width, height)
+function LM_DungeonHeaderMixin:OnSizeChanged(width, height)
     self.Image:SetWidth(height-5);
 end
 
-function MPLM_DungeonHeaderMixin:SetDungeonHighlight(value)
+function LM_DungeonHeaderMixin:SetDungeonHighlight(value)
     self.DungeonHighlight:SetShown(value)
 end
 
-function MPLM_DungeonHeaderMixin:Reset()
+function LM_DungeonHeaderMixin:Reset()
     self.dungeonInfo = nil
     self.DungeonHighlight:Hide()
 end
 
----@class MPLM_DungeonFrame : MPLM_MatrixFrame
-MPLM_DungeonFrameMixin = {}
+---@class LM_DungeonFrame : LM_MatrixFrame
+LM_DungeonFrameMixin = {}
 
-function MPLM_DungeonFrameMixin:UpdateMatrix()
-    MPLM_MatrixFrameMixin.UpdateMatrix(self)
+function LM_DungeonFrameMixin:UpdateMatrix()
+    LM_MatrixFrameMixin.UpdateMatrix(self)
     self:UpdateDungeonHighlight()
 end
 
-function MPLM_DungeonFrameMixin:UpdateDungeonHighlight()
+function LM_DungeonFrameMixin:UpdateDungeonHighlight()
     local _, _, _, _, _, _, _, instanceID, _, _ = GetInstanceInfo()
     local itemButtonsOfHighlightedDungeon = nil
     for rowHeader, itemButtonsPerDungeon in pairs(self.matrixFrames.itemButtons) do
-        local dungeonHeader = rowHeader ---@type MPLM_DungeonHeader
+        local dungeonHeader = rowHeader ---@type LM_DungeonHeader
         local dungeonHighlighted = instanceID == dungeonHeader.dungeonInfo.mapId
         dungeonHeader:SetDungeonHighlight(dungeonHighlighted)
 
@@ -88,7 +88,7 @@ local dungeonSplits = {
     }
 }
 
-function MPLM_DungeonFrameMixin:GatherRowInfo()
+function LM_DungeonFrameMixin:GatherRowInfo()
     -- populates EncounterJournal global
     EncounterJournal_LoadUI()
 

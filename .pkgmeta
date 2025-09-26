@@ -1,4 +1,4 @@
-package-as: MythicPlusLootMatrix
+package-as: LootMatrix
 
 manual-changelog:
   filename: CHANGELOG.md

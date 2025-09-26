@@ -1,4 +1,4 @@
----@class MPLM_Private
+---@class LM_Private
 local private = select(2, ...)
 
 ---@class BossInfo : RowInfo
@@ -7,14 +7,14 @@ local private = select(2, ...)
 ---@field name string
 ---@field imageId number
 
----@class MPLM_RaidHeader : MPLM_RowHeader
+---@class LM_RaidHeader : LM_RowHeader
 ---@field Image Texture
 ---@field Label FontString
 ---@field RaidHighlight Texture
-MPLM_RaidHeaderMixin = {}
+LM_RaidHeaderMixin = {}
 
 ---@param bossInfo BossInfo
-function MPLM_RaidHeaderMixin:Init(bossInfo)
+function LM_RaidHeaderMixin:Init(bossInfo)
     self.bossInfo = bossInfo
     self.Image:SetTexture(bossInfo.imageId)
 
@@ -22,23 +22,23 @@ function MPLM_RaidHeaderMixin:Init(bossInfo)
     self.Label:SetText(raidName)
 end
 
-function MPLM_RaidHeaderMixin:OnSizeChanged(width, height)
+function LM_RaidHeaderMixin:OnSizeChanged(width, height)
     self.Image:SetSize(height-5, (height-5)/2);
 end
 
-function MPLM_RaidHeaderMixin:SetRaidHighlight(value)
+function LM_RaidHeaderMixin:SetRaidHighlight(value)
     self.RaidHighlight:SetShown(value)
 end
 
-function MPLM_RaidHeaderMixin:Reset()
+function LM_RaidHeaderMixin:Reset()
     self.bossInfo = nil
     self.RaidHighlight:Hide()
 end
 
----@class MPLM_RaidFrame : MPLM_MatrixFrame
-MPLM_RaidFrameMixin = {}
+---@class LM_RaidFrame : LM_MatrixFrame
+LM_RaidFrameMixin = {}
 
-function MPLM_RaidFrameMixin:GatherRowInfo()
+function LM_RaidFrameMixin:GatherRowInfo()
     -- populates EncounterJournal global
     EncounterJournal_LoadUI()
 

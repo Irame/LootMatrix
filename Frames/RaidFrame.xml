@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Script file="RaidFrame.lua" />
 
-    <Frame name="MPLM_RaidHeaderTemplate" mixin="MPLM_RaidHeaderMixin" inherits="MPLM_RowHeaderTemplate" virtual="true">
+    <Frame name="LM_RaidHeaderTemplate" mixin="LM_RaidHeaderMixin" inherits="LM_RowHeaderTemplate" virtual="true">
         <Layers>
             <Layer level="OVERLAY">
                 <Texture parentKey="Image">
@@ -33,9 +33,9 @@
         </Scripts>
     </Frame>
 
-    <Frame name="MPLM_RaidFrameTemplate" mixin="MPLM_RaidFrameMixin" inherits="MPLM_MatrixFrameTemplate" virtual="true">
+    <Frame name="LM_RaidFrameTemplate" mixin="LM_RaidFrameMixin" inherits="LM_MatrixFrameTemplate" virtual="true">
         <KeyValues>
-            <KeyValue key="rowTemplate" value="MPLM_RaidHeaderTemplate" type="string"/>
+            <KeyValue key="rowTemplate" value="LM_RaidHeaderTemplate" type="string"/>
         </KeyValues>
     </Frame>
 </Ui>

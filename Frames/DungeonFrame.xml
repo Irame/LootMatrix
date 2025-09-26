@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Script file="DungeonFrame.lua" />
 
-    <Frame name="MPLM_DungeonHeaderTemplate" mixin="MPLM_DungeonHeaderMixin" inherits="MPLM_RowHeaderTemplate" virtual="true">
+    <Frame name="LM_DungeonHeaderTemplate" mixin="LM_DungeonHeaderMixin" inherits="LM_RowHeaderTemplate" virtual="true">
         <Layers>
             <Layer level="OVERLAY">
                 <Texture parentKey="Image">
@@ -32,9 +32,9 @@
         </Scripts>
     </Frame>
 
-    <Frame name="MPLM_DungeonFrameTemplate" mixin="MPLM_DungeonFrameMixin" inherits="MPLM_MatrixFrameTemplate" virtual="true">
+    <Frame name="LM_DungeonFrameTemplate" mixin="LM_DungeonFrameMixin" inherits="LM_MatrixFrameTemplate" virtual="true">
         <KeyValues>
-            <KeyValue key="rowTemplate" value="MPLM_DungeonHeaderTemplate" type="string"/>
+            <KeyValue key="rowTemplate" value="LM_DungeonHeaderTemplate" type="string"/>
         </KeyValues>
     </Frame>
 </Ui>

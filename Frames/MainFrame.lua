@@ -1,13 +1,13 @@
----@class MPLM_Private
+---@class LM_Private
 local private = select(2, ...)
 
 local L = private.L
 
----@class MPLM_ButtonStateBehavior : ButtonStateBehaviorMixin, Button
+---@class LM_ButtonStateBehavior : ButtonStateBehaviorMixin, Button
 ---@field atlasKey string
-MPLM_ButtonStateBehaviorMixin = CreateFromMixins(ButtonStateBehaviorMixin);
+LM_ButtonStateBehaviorMixin = CreateFromMixins(ButtonStateBehaviorMixin);
 
-function MPLM_ButtonStateBehaviorMixin:OnButtonStateChanged()
+function LM_ButtonStateBehaviorMixin:OnButtonStateChanged()
 	local atlas = self.atlasKey;
 	if self:IsDownOver() or self:IsOver() then
 		atlas = atlas.."-hover";
@@ -18,15 +18,15 @@ function MPLM_ButtonStateBehaviorMixin:OnButtonStateChanged()
 	self:GetNormalTexture():SetAtlas(atlas, TextureKitConstants.IgnoreAtlasSize);
 end
 
----@class MPLM_SettingsButton : MPLM_ButtonStateBehavior
-MPLM_SettingsButtonMixin = CreateFromMixins(MPLM_ButtonStateBehaviorMixin);
+---@class LM_SettingsButton : LM_ButtonStateBehavior
+LM_SettingsButtonMixin = CreateFromMixins(LM_ButtonStateBehaviorMixin);
 
----@param mainFrame MPLM_MainFrame
-function MPLM_SettingsButtonMixin:Init(mainFrame)
+---@param mainFrame LM_MainFrame
+function LM_SettingsButtonMixin:Init(mainFrame)
     self.mainFrame = mainFrame
 end
 
-function MPLM_SettingsButtonMixin:OnClick()
+function LM_SettingsButtonMixin:OnClick()
     MenuUtil.CreateContextMenu(self, function(button, rootDescription)
         rootDescription:CreateTitle(L["Settings"])
         rootDescription:CreateCheckbox(L["Use Short Dungeon Names"],
@@ -40,7 +40,7 @@ function MPLM_SettingsButtonMixin:OnClick()
     end)
 end
 
----@class MPLM_MainFrame : PortraitFrameFlatTemplate, TabSystemOwnerTemplate
+---@class LM_MainFrame : PortraitFrameFlatTemplate, TabSystemOwnerTemplate
 ---@field Filter WowStyle1DropdownTemplate
 ---@field ResetFilterButton IconButtonTemplate
 ---@field ResizeButton PanelResizeButtonTemplate
@@ -48,13 +48,13 @@ end
 ---@field Stat2Search WowStyle1DropdownTemplate
 ---@field SlotSelect WowStyle1DropdownTemplate
 ---@field HideOtherItems ResizeCheckButtonTemplate
----@field SettingsButton MPLM_SettingsButton
----@field DungeonsFrame MPLM_DungeonFrame
----@field RaidFrame MPLM_RaidFrame
+---@field SettingsButton LM_SettingsButton
+---@field DungeonsFrame LM_DungeonFrame
+---@field RaidFrame LM_RaidFrame
 ---@field TabSystem TabSystemTemplate
-MPLM_MainFrameMixin = {}
+LM_MainFrameMixin = {}
 
-function MPLM_MainFrameMixin:OnLoad()
+function LM_MainFrameMixin:OnLoad()
     TabSystemOwnerMixin.OnLoad(self)
 
     self:SetPortraitToAsset([[Interface\EncounterJournal\UI-EJ-PortraitIcon]])
@@ -67,7 +67,7 @@ function MPLM_MainFrameMixin:OnLoad()
     self.ResizeButton:Init(self, 1100, 670, 1100*1.5, 670*1.5);
 end
 
-function MPLM_MainFrameMixin:Init()
+function LM_MainFrameMixin:Init()
     -- this is required for the SpellBookItemAutoCastTemplate to be available
     PlayerSpellsFrame_LoadUI();
 
@@ -79,23 +79,23 @@ function MPLM_MainFrameMixin:Init()
     self.SettingsButton:Init(self)
 end
 
-function MPLM_MainFrameMixin:GetCurrentFrame()
+function LM_MainFrameMixin:GetCurrentFrame()
     return self.tabIdToFrame[self:GetTab()]
 end
 
-function MPLM_MainFrameMixin:DoScan()
+function LM_MainFrameMixin:DoScan()
     self:GetCurrentFrame():DoScan()
 end
 
-function MPLM_MainFrameMixin:UpdateMatrix()
+function LM_MainFrameMixin:UpdateMatrix()
     self:GetCurrentFrame():UpdateMatrix()
 end
 
-function MPLM_MainFrameMixin:UpdateSearchGlow()
+function LM_MainFrameMixin:UpdateSearchGlow()
     self:GetCurrentFrame():UpdateSearchGlow()
 end
 
-function MPLM_MainFrameMixin:OnShow()
+function LM_MainFrameMixin:OnShow()
     if EncounterJournal and EncounterJournal:IsShown() then
         EncounterJournal:Hide()
     end
@@ -110,7 +110,7 @@ function MPLM_MainFrameMixin:OnShow()
     end
 end
 
-function MPLM_MainFrameMixin:OnEvent(event, ...)
+function LM_MainFrameMixin:OnEvent(event, ...)
     if event == "EJ_LOOT_DATA_RECIEVED" then
         if self:IsShown() and not self.RescanTimer then
             self.RescanTimer = C_Timer.NewTimer(0.2, function()
@@ -121,7 +121,7 @@ function MPLM_MainFrameMixin:OnEvent(event, ...)
     end
 end
 
-function MPLM_MainFrameMixin:UpdatSizeConstraints(innerMinWidth, innerMinHeight, innerMaxWidth, innerMaxHeight)
+function LM_MainFrameMixin:UpdatSizeConstraints(innerMinWidth, innerMinHeight, innerMaxWidth, innerMaxHeight)
     local absoulteMinWidth = 925
 
     local minHeight = innerMinHeight + 140
@@ -149,7 +149,7 @@ function MPLM_MainFrameMixin:UpdatSizeConstraints(innerMinWidth, innerMinHeight,
     end
 end
 
-function MPLM_MainFrameMixin:SetupFilterDropdown()
+function LM_MainFrameMixin:SetupFilterDropdown()
 
     local function GetClassFilter()
         local filterClassID, filterSpecID = EJ_GetLootFilter();
@@ -182,7 +182,7 @@ function MPLM_MainFrameMixin:SetupFilterDropdown()
     self.ResetFilterButton:SetTooltipInfo(nil, L["Reset filter to your current class/spec."]);
 end
 
-function MPLM_MainFrameMixin:SetupStatSearchDropdown()
+function LM_MainFrameMixin:SetupStatSearchDropdown()
     local function UpdateOnSelection()
         if self.hideOtherItems then
             self:UpdateMatrix()
@@ -230,7 +230,7 @@ function MPLM_MainFrameMixin:SetupStatSearchDropdown()
     end
 end
 
-function MPLM_MainFrameMixin:SetupSlotsDropdown()
+function LM_MainFrameMixin:SetupSlotsDropdown()
     local function IsSelected(slot)
         return private:IsSlotActive(slot)
     end
@@ -257,7 +257,7 @@ function MPLM_MainFrameMixin:SetupSlotsDropdown()
     end);
 end
 
-function MPLM_MainFrameMixin:SetupHideOtherItemsCheckbox()
+function LM_MainFrameMixin:SetupHideOtherItemsCheckbox()
     local function HideOtherItemsToggled()
         self.hideOtherItems = not self.hideOtherItems
         self:UpdateMatrix()
@@ -267,7 +267,7 @@ function MPLM_MainFrameMixin:SetupHideOtherItemsCheckbox()
 	self.HideOtherItems:SetCallback(HideOtherItemsToggled);
 end
 
-function MPLM_MainFrameMixin:SetupTabs()
+function LM_MainFrameMixin:SetupTabs()
     self:SetTabSystem(self.TabSystem)
 	self.dungeonsTabId = self:AddNamedTab(DUNGEONS, self.DungeonsFrame)
 	self.raidTabId = self:AddNamedTab(RAID, self.RaidFrame)
@@ -280,7 +280,7 @@ function MPLM_MainFrameMixin:SetupTabs()
     self:SetTab(self.dungeonsTabId)
 end
 
-function MPLM_MainFrameMixin:SetTab(tabId)
+function LM_MainFrameMixin:SetTab(tabId)
     TabSystemOwnerMixin.SetTab(self, tabId)
     self:DoScan()
 end

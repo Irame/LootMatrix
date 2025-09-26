@@ -1,18 +1,18 @@
 ---@type string
 local addonName = ...
 
----@class MPLM_Private
+---@class LM_Private
 local private = select(2, ...)
 
----@class MPLM : AceAddon, AceConsole-3.0
+---@class LootMatrix : AceAddon, AceConsole-3.0
 local addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0")
 private.addon = addon
 
----@type MPLM_MainFrame
-MPLM_MainFrame = MPLM_MainFrame
+---@type LM_MainFrame
+LM_MainFrame = LM_MainFrame
 
 function addon:OnInitialize()
-    tinsert(UISpecialFrames, MPLM_MainFrame:GetName())
+    tinsert(UISpecialFrames, LM_MainFrame:GetName())
 
     self:RegisterChatCommand("mplm", "ChatCommandHandler");
     self:RegisterChatCommand("lm", "ChatCommandHandler");
@@ -20,17 +20,17 @@ function addon:OnInitialize()
 end
 
 function addon:OnEnable()
-    MPLM_MainFrame:Init()
+    LM_MainFrame:Init()
 end
 
 function addon:ChatCommandHandler(args)
     private:ToggleMatrixFrame()
 end
 
-function MPLM_OnAddonCompartmentClick()
+function LM_OnAddonCompartmentClick()
     private:ToggleMatrixFrame()
 end
 
 function private:ToggleMatrixFrame()
-    MPLM_MainFrame:SetShown(MPLM_MainFrame:IsShown() == false)
+    LM_MainFrame:SetShown(LM_MainFrame:IsShown() == false)
 end

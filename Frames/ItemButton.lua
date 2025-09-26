@@ -1,7 +1,7 @@
----@class MPLM_Private
+---@class LM_Private
 local private = select(2, ...)
 
----@class MPLM_ItemButton : Button
+---@class LM_ItemButton : Button
 ---@field itemLink string
 ---@field Icon Texture
 ---@field Border Texture
@@ -10,10 +10,10 @@ local private = select(2, ...)
 ---@field ItemLevel FontString
 ---@field AutoCastOverlay SpellBookItemAutoCastTemplate
 ---@field SpellActivationAlert? ActionButtonSpellAlertTemplate
-MPLM_ItemButtonMixin = {}
+LM_ItemButtonMixin = {}
 
 ---@param itemInfoOrLink? EncounterJournalItemInfo | string
-function MPLM_ItemButtonMixin:Init(itemInfoOrLink)
+function LM_ItemButtonMixin:Init(itemInfoOrLink)
     local function FinishInit()
         self:UpdateStats()
         self:UpdateBorder()
@@ -45,13 +45,13 @@ function MPLM_ItemButtonMixin:Init(itemInfoOrLink)
     end
 end
 
-function MPLM_ItemButtonMixin:Reset()
+function LM_ItemButtonMixin:Reset()
     self.itemLink = nil
     self:HideStrongHighlight()
     self:HideWeakHighlight()
 end
 
-function MPLM_ItemButtonMixin:ShowStrongHighlight()
+function LM_ItemButtonMixin:ShowStrongHighlight()
     self:HideWeakHighlight()
 
     ActionButtonSpellAlertManager:ShowAlert(self)
@@ -60,22 +60,22 @@ function MPLM_ItemButtonMixin:ShowStrongHighlight()
     self.SpellActivationAlert.ProcStartFlipbook:SetSize(width*3.5, height*3.5)
 end
 
-function MPLM_ItemButtonMixin:HideStrongHighlight()
+function LM_ItemButtonMixin:HideStrongHighlight()
     ActionButtonSpellAlertManager:HideAlert(self)
 end
 
-function MPLM_ItemButtonMixin:ShowWeakHighlight()
+function LM_ItemButtonMixin:ShowWeakHighlight()
     self:HideStrongHighlight()
     self.AutoCastOverlay:SetShown(true);
     self.AutoCastOverlay:ShowAutoCastEnabled(true);
 end
 
-function MPLM_ItemButtonMixin:HideWeakHighlight()
+function LM_ItemButtonMixin:HideWeakHighlight()
     self.AutoCastOverlay:ShowAutoCastEnabled(false);
     self.AutoCastOverlay:SetShown(false);
 end
 
-function MPLM_ItemButtonMixin:UpdateStats()
+function LM_ItemButtonMixin:UpdateStats()
     if self.itemLink then
         local statInfo = private:GetSortedStatsInfo(self.itemLink)
 
@@ -96,7 +96,7 @@ function MPLM_ItemButtonMixin:UpdateStats()
     end
 end
 
-function MPLM_ItemButtonMixin:UpdateBorder()
+function LM_ItemButtonMixin:UpdateBorder()
     local _, _, itemQuality = C_Item.GetItemInfo(self.itemLink);
     itemQuality = itemQuality or Enum.ItemQuality.Epic;
     if IsArtifactRelicItem(self.itemLink) then
@@ -108,7 +108,7 @@ function MPLM_ItemButtonMixin:UpdateBorder()
     self.Border:SetVertexColor(color.r, color.g, color.b);
 end
 
-function MPLM_ItemButtonMixin:GetPreviewClassAndSpec()
+function LM_ItemButtonMixin:GetPreviewClassAndSpec()
     local classID, specID = EJ_GetLootFilter();
     if specID == 0 then
         local spec = GetSpecialization();
@@ -121,7 +121,7 @@ function MPLM_ItemButtonMixin:GetPreviewClassAndSpec()
     return classID, specID;
 end
 
-function MPLM_ItemButtonMixin:OnUpdate()
+function LM_ItemButtonMixin:OnUpdate()
     if GameTooltip:IsOwned(self) then
         if IsModifiedClick("DRESSUP") then
             ShowInspectCursor();
@@ -131,7 +131,7 @@ function MPLM_ItemButtonMixin:OnUpdate()
     end
 end
 
-function MPLM_ItemButtonMixin:ShowItemTooltip()
+function LM_ItemButtonMixin:ShowItemTooltip()
     if not self.itemLink then return end
 
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -144,22 +144,22 @@ function MPLM_ItemButtonMixin:ShowItemTooltip()
     GameTooltip_ShowCompareItem();
 end
 
-function MPLM_ItemButtonMixin:OnEnter()
+function LM_ItemButtonMixin:OnEnter()
     self:ShowItemTooltip()
     self:SetScript("OnUpdate", self.OnUpdate);
 end
 
-function MPLM_ItemButtonMixin:OnLeave()
+function LM_ItemButtonMixin:OnLeave()
     GameTooltip:Hide();
     self:SetScript("OnUpdate", nil);
     ResetCursor();
 end
 
-function MPLM_ItemButtonMixin:OnClick()
+function LM_ItemButtonMixin:OnClick()
     HandleModifiedItemClick(self.itemLink);
 end
 
-function MPLM_ItemButtonMixin:OnSizeChanged(width, height)
+function LM_ItemButtonMixin:OnSizeChanged(width, height)
     self.Stat2:SetPoint("BOTTOM", 0, height/8-1)
 
     if self.SpellActivationAlert then

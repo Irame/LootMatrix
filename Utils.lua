@@ -1,4 +1,4 @@
----@class MPLM_Private
+---@class LM_Private
 local private = select(2, ...)
 
 private.ctor = {}

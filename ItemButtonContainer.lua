@@ -1,15 +1,15 @@
----@class MPLM_Private
+---@class LM_Private
 local private = select(2, ...)
 
 ---@class ItemButtonContainer
----@field buttons MPLM_ItemButton[]
+---@field buttons LM_ItemButton[]
 local ItemButtonContainer = {}
 
 ---@param maxCols integer
 ---@param maxRows integer
 ---@param parent Frame
----@param rowHeader MPLM_RowHeader
----@param slotHeader MPLM_SlotHeader
+---@param rowHeader LM_RowHeader
+---@param slotHeader LM_SlotHeader
 function ItemButtonContainer:Init(maxCols, maxRows, parent, rowHeader, slotHeader)
     self.maxCols = maxCols
     self.maxRows = maxRows

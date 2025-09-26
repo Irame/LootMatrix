@@ -1,26 +1,26 @@
----@class MPLM_Private
+---@class LM_Private
 local private = select(2, ...)
 
 ---@class RowInfo
 ---@field loot number[]
 
----@class MPLM_RowHeader : Frame
-MPLM_RowHeaderMixin = {}
+---@class LM_RowHeader : Frame
+LM_RowHeaderMixin = {}
 
 --- Subclasses should override this to initialize the header with the row info
 ---@param rowInfo RowInfo
-function MPLM_RowHeaderMixin:Init(rowInfo)
+function LM_RowHeaderMixin:Init(rowInfo)
     self.info = rowInfo
 end
 
----@class MPLM_SlotHeader : Frame
+---@class LM_SlotHeader : Frame
 ---@field Label FontString
----@field EquippedItem1Button MPLM_ItemButton
----@field EquippedItem2Button MPLM_ItemButton
+---@field EquippedItem1Button LM_ItemButton
+---@field EquippedItem2Button LM_ItemButton
 ---@field SlotHighlight Texture
-MPLM_SlotHeaderMixin = {}
+LM_SlotHeaderMixin = {}
 
-function MPLM_SlotHeaderMixin:Init(slot)
+function LM_SlotHeaderMixin:Init(slot)
     self.Label:SetText(private.slotFilterToSlotName[slot])
     local slotIDs = private.slotFilterToSlotIDs[slot]
 
@@ -42,17 +42,17 @@ function MPLM_SlotHeaderMixin:Init(slot)
     end
 end
 
-function MPLM_SlotHeaderMixin:SetHighlight(value)
+function LM_SlotHeaderMixin:SetHighlight(value)
     self.SlotHighlight:SetShown(value)
 end
 
-function MPLM_SlotHeaderMixin:Reset()
+function LM_SlotHeaderMixin:Reset()
     self.SlotHighlight:Hide()
 end
 
----@class MPLM_MatrixFrame : Frame
+---@class LM_MatrixFrame : Frame
 ---@field rowTemplate? string
-MPLM_MatrixFrameMixin = {}
+LM_MatrixFrameMixin = {}
 
 local function FramePoolDefaultReset(pool, region)
     if region.Reset then
@@ -72,10 +72,10 @@ local function ItemButtonContainerPoolCreate(pool)
     return private.ctor.ItemButtonContainer()
 end
 
-function MPLM_MatrixFrameMixin:OnLoad()
-    self.rowHeaderPool = CreateFramePool("Frame", self, self.rowTemplate or "MPLM_RowHeaderTemplate", FramePoolDefaultReset)
-    self.slotHeaderPool = CreateFramePool("Frame", self, "MPLM_SlotHeaderTemplate", FramePoolDefaultReset)
-    self.itemButtonPool = CreateFramePool("Button", nil, "MPLM_ItemButtonTemplate", FramePoolDefaultReset)
+function LM_MatrixFrameMixin:OnLoad()
+    self.rowHeaderPool = CreateFramePool("Frame", self, self.rowTemplate or "LM_RowHeaderTemplate", FramePoolDefaultReset)
+    self.slotHeaderPool = CreateFramePool("Frame", self, "LM_SlotHeaderTemplate", FramePoolDefaultReset)
+    self.itemButtonPool = CreateFramePool("Button", nil, "LM_ItemButtonTemplate", FramePoolDefaultReset)
     self.itemButtonContainerPool = CreateObjectPool(ItemButtonContainerPoolCreate, ObjectPoolDefaultReset)
 
     ---@type table<number, EncounterJournalItemInfo>
@@ -84,28 +84,28 @@ function MPLM_MatrixFrameMixin:OnLoad()
     ---@type RowInfo[]
     self.rowInfos = {}
 
-    self.parent = self:GetParent() --[[@as MPLM_MainFrame]]
+    self.parent = self:GetParent() --[[@as LM_MainFrame]]
 end
 
 --- Subclasses should override this to gather the row info for the matrix
 ---@return RowInfo[]
-function MPLM_MatrixFrameMixin:GatherRowInfo()
+function LM_MatrixFrameMixin:GatherRowInfo()
     return {}
 end
 
-function MPLM_MatrixFrameMixin:DoScan()
+function LM_MatrixFrameMixin:DoScan()
     self.rowInfos = self:GatherRowInfo()
     self:UpdateMatrix()
 end
 
-function MPLM_MatrixFrameMixin:UpdateMatrix()
+function LM_MatrixFrameMixin:UpdateMatrix()
     self.matrixFrames = self:BuildMatrix()
     self:UpdatSizeConstraints(self.matrixFrames)
     self:LayoutMatrix(self.matrixFrames)
     self:UpdateSearchGlow()
 end
 
-function MPLM_MatrixFrameMixin:OnSizeChanged()
+function LM_MatrixFrameMixin:OnSizeChanged()
     if self.matrixFrames then
         self:LayoutMatrix(self.matrixFrames)
     end
@@ -113,7 +113,7 @@ end
 
 ---@param itemLink string
 ---@return integer|true|false|nil matchResult 2 = strong match, 1 = weak match, true = all stats match, false = no match, nil = invalid item link
-function MPLM_MatrixFrameMixin:MatchWithStatSearch(itemLink)
+function LM_MatrixFrameMixin:MatchWithStatSearch(itemLink)
     if not itemLink then return nil end
 
     -- different behaviour if both stat search boxes are set to the same value
@@ -133,8 +133,8 @@ function MPLM_MatrixFrameMixin:MatchWithStatSearch(itemLink)
     end
 end
 
-function MPLM_MatrixFrameMixin:UpdateSearchGlow()
-    for button in self.itemButtonPool:EnumerateActive() --[[@as fun(): MPLM_ItemButton]] do
+function LM_MatrixFrameMixin:UpdateSearchGlow()
+    for button in self.itemButtonPool:EnumerateActive() --[[@as fun(): LM_ItemButton]] do
         if button.itemLink then
             local matchResult = self:MatchWithStatSearch(button.itemLink)
             if matchResult == 2 then
@@ -153,7 +153,7 @@ function MPLM_MatrixFrameMixin:UpdateSearchGlow()
 end
 
 ---@param matrixFrames MatrixFrames
-function MPLM_MatrixFrameMixin:UpdatSizeConstraints(matrixFrames)
+function LM_MatrixFrameMixin:UpdatSizeConstraints(matrixFrames)
     local minHeight = #matrixFrames.rowHeaders * 65
     local minWidth = #matrixFrames.slotHeaders * 65
 
@@ -164,7 +164,7 @@ function MPLM_MatrixFrameMixin:UpdatSizeConstraints(matrixFrames)
 end
 
 --- Returns a table of loot slots that are present in the current row infos
-function MPLM_MatrixFrameMixin:GetLootSlotsPresent()
+function LM_MatrixFrameMixin:GetLootSlotsPresent()
 	---@type table<Enum.ItemSlotFilterType, boolean>
     local isLootSlotPresent = {};
 	for i, rowInfo in ipairs(self.rowInfos) do
@@ -179,7 +179,7 @@ function MPLM_MatrixFrameMixin:GetLootSlotsPresent()
 end
 
 ---@param itemInfo EncounterJournalItemInfo
-function MPLM_MatrixFrameMixin:IsItemVisible(itemInfo)
+function LM_MatrixFrameMixin:IsItemVisible(itemInfo)
     return itemInfo
         and itemInfo.filterType
         and itemInfo.link
@@ -189,7 +189,7 @@ function MPLM_MatrixFrameMixin:IsItemVisible(itemInfo)
 end
 
 ---@param rowInfo RowInfo
-function MPLM_MatrixFrameMixin:HasRowVisibleItems(rowInfo)
+function LM_MatrixFrameMixin:HasRowVisibleItems(rowInfo)
     for i, itemId in ipairs(rowInfo.loot) do
         if self:IsItemVisible(self.itemCache[itemId]) then
             return true
@@ -198,11 +198,11 @@ function MPLM_MatrixFrameMixin:HasRowVisibleItems(rowInfo)
 end
 
 ---@class MatrixFrames
----@field rowHeaders MPLM_RowHeader[]
----@field slotHeaders MPLM_SlotHeader[]
----@field itemButtons table<MPLM_RowHeader, table<MPLM_SlotHeader, ItemButtonContainer>>
+---@field rowHeaders LM_RowHeader[]
+---@field slotHeaders LM_SlotHeader[]
+---@field itemButtons table<LM_RowHeader, table<LM_SlotHeader, ItemButtonContainer>>
 
-function MPLM_MatrixFrameMixin:BuildMatrix()
+function LM_MatrixFrameMixin:BuildMatrix()
     self.rowHeaderPool:ReleaseAll()
     self.slotHeaderPool:ReleaseAll()
     self.itemButtonPool:ReleaseAll()
@@ -218,7 +218,7 @@ function MPLM_MatrixFrameMixin:BuildMatrix()
     local rowToHeader = {}
     for i, rowInfo in ipairs(self.rowInfos) do
         if self:HasRowVisibleItems(rowInfo) then
-            local rowHeader = self.rowHeaderPool:Acquire() --[[@as MPLM_RowHeader]]
+            local rowHeader = self.rowHeaderPool:Acquire() --[[@as LM_RowHeader]]
             rowHeader:Init(rowInfo)
 
             rowToHeader[i] = rowHeader
@@ -230,7 +230,7 @@ function MPLM_MatrixFrameMixin:BuildMatrix()
     local slotToHeader = {}
     for i, filter in pairs(private.slotFilterOrdered) do
         if isLootSlotPresent[filter] and private:IsSlotActive(filter) then
-            local slotHeader = self.slotHeaderPool:Acquire() --[[@as MPLM_SlotHeader]]
+            local slotHeader = self.slotHeaderPool:Acquire() --[[@as LM_SlotHeader]]
             slotHeader:Init(filter)
 
             slotToHeader[filter] = slotHeader
@@ -255,7 +255,7 @@ function MPLM_MatrixFrameMixin:BuildMatrix()
                         itemButtonsFrames[slotHeader] = currentButtonContainer
                     end
 
-                    local itemButton = self.itemButtonPool:Acquire() --[[@as MPLM_ItemButton]]
+                    local itemButton = self.itemButtonPool:Acquire() --[[@as LM_ItemButton]]
                     itemButton:Init(itemInfo)
 
                     currentButtonContainer:AddButton(itemButton)
@@ -270,7 +270,7 @@ function MPLM_MatrixFrameMixin:BuildMatrix()
 end
 
 ---@param matrixData MatrixFrames
-function MPLM_MatrixFrameMixin:LayoutMatrix(matrixData)
+function LM_MatrixFrameMixin:LayoutMatrix(matrixData)
     if not self:IsVisible() then return end
 
     local dividerSize = 5
@@ -322,7 +322,7 @@ end
 
 --- Gathers items from the encounter journal into the item cache and the provided itemIds table
 ---@param itemIds number[]
-function MPLM_MatrixFrameMixin:GatherItemsFromJournal(itemIds)
+function LM_MatrixFrameMixin:GatherItemsFromJournal(itemIds)
     for i = 1, EJ_GetNumLoot() do
         local lootInfo = C_EncounterJournal.GetLootInfoByIndex(i)
         if lootInfo and lootInfo.itemID and lootInfo.filterType ~= Enum.ItemSlotFilterType.Other then

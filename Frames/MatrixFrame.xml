@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Script file="MatrixFrame.lua" />
 
-    <Frame name="MPLM_RowHeaderTemplate" mixin="MPLM_RowHeaderMixin" virtual="true">
+    <Frame name="LM_RowHeaderTemplate" mixin="LM_RowHeaderMixin" virtual="true">
         <Layers>
             <Layer level="BORDER">
                 <Texture atlas="_UI-HUD-ActionBar-Frame-Divider-Threeslice-Center" useAtlasSize="true">
@@ -32,7 +32,7 @@
         </Scripts>
     </Frame>
 
-    <Frame name="MPLM_SlotHeaderTemplate" mixin="MPLM_SlotHeaderMixin" virtual="true">
+    <Frame name="LM_SlotHeaderTemplate" mixin="LM_SlotHeaderMixin" virtual="true">
         <Layers>
             <Layer level="OVERLAY">
                 <FontString parentKey="Label" inherits="GameFontNormal">
@@ -69,12 +69,12 @@
             </Layer>
         </Layers>
         <Frames>
-            <Button inherits="MPLM_ItemButtonTemplate" parentKey="EquippedItem1Button">
+            <Button inherits="LM_ItemButtonTemplate" parentKey="EquippedItem1Button">
                 <Anchors>
                     <Anchor point="TOPRIGHT" relativePoint="TOP" y="-7"/>
                 </Anchors>
             </Button>
-            <Button inherits="MPLM_ItemButtonTemplate" parentKey="EquippedItem2Button">
+            <Button inherits="LM_ItemButtonTemplate" parentKey="EquippedItem2Button">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativePoint="TOP" y="-7"/>
                 </Anchors>
@@ -91,7 +91,7 @@
         </Scripts>
     </Frame>
 
-    <Frame name="MPLM_MatrixFrameTemplate" mixin="MPLM_MatrixFrameMixin" virtual="true">
+    <Frame name="LM_MatrixFrameTemplate" mixin="LM_MatrixFrameMixin" virtual="true">
         <Scripts>
             <OnLoad method="OnLoad"/>
             <OnSizeChanged method="OnSizeChanged"/>

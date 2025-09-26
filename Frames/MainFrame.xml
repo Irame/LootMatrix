@@ -1,8 +1,8 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Script file="MainFrame.lua" />
 
-    <Frame name="MPLM_MainFrame" parent="UIParent" inherits="PortraitFrameFlatTemplate, TabSystemOwnerTemplate"
-        mixin="MPLM_MainFrameMixin" enableMouse="true" movable="true" clampedToScreen="true"
+    <Frame name="LM_MainFrame" parent="UIParent" inherits="PortraitFrameFlatTemplate, TabSystemOwnerTemplate"
+        mixin="LM_MainFrameMixin" enableMouse="true" movable="true" clampedToScreen="true"
         hidden="true" resizable="true" frameStrata="DIALOG">
         <Size x="1100" y="670" />
         <Anchors>
@@ -55,7 +55,7 @@
                     <Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
                 </Anchors>
             </Button>
-            <Button parentKey="SettingsButton" mixin="MPLM_SettingsButtonMixin">
+            <Button parentKey="SettingsButton" mixin="LM_SettingsButtonMixin">
                 <Size x="40" y="40"/>
                 <NormalTexture atlas="GM-icon-settings"/>
                 <KeyValues>
@@ -73,13 +73,13 @@
                     <OnClick method="OnClick"/>
                 </Scripts>
             </Button>
-            <Frame parentKey="DungeonsFrame" inherits="MPLM_DungeonFrameTemplate">
+            <Frame parentKey="DungeonsFrame" inherits="LM_DungeonFrameTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="10" y="-90"/>
                     <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="BOTTOMRIGHT" x="-10" y="10"/>
                 </Anchors>
             </Frame>
-            <Frame parentKey="RaidFrame" inherits="MPLM_RaidFrameTemplate">
+            <Frame parentKey="RaidFrame" inherits="LM_RaidFrameTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="10" y="-90"/>
                     <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="BOTTOMRIGHT" x="-10" y="10"/>
@@ -103,7 +103,7 @@
                         <Anchor point="RIGHT" relativeKey="$parent.Stat1Search" relativePoint="LEFT" x="-10"/>
                     </Anchors>
                     <Scripts>
-                        <OnLoad function="MPLM_LocalizeFontString"/>
+                        <OnLoad function="LM_LocalizeFontString"/>
                     </Scripts>
                 </FontString>
             </Layer>
@@ -113,7 +113,7 @@
                         <Anchor point="RIGHT" relativeKey="$parent.SlotSelect" relativePoint="LEFT" x="-10"/>
                     </Anchors>
                     <Scripts>
-                        <OnLoad function="MPLM_LocalizeFontString"/>
+                        <OnLoad function="LM_LocalizeFontString"/>
                     </Scripts>
                 </FontString>
             </Layer>
