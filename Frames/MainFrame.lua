@@ -50,7 +50,7 @@ end
 ---@field HideOtherItems ResizeCheckButtonTemplate
 ---@field SettingsButton MPLM_SettingsButton
 ---@field DungeonsFrame MPLM_DungeonFrame
----@field RaidFrame Frame
+---@field RaidFrame MPLM_RaidFrame
 ---@field TabSystem TabSystemTemplate
 MPLM_MainFrameMixin = {}
 
@@ -59,10 +59,6 @@ function MPLM_MainFrameMixin:OnLoad()
 
     self:SetPortraitToAsset([[Interface\EncounterJournal\UI-EJ-PortraitIcon]])
     self:SetTitle(L["Mythic+ Loot Matrix"])
-
-    self:SetTabSystem(self.TabSystem);
-	self.specTabID = self:AddNamedTab(L["Dungeons"], self.DungeonsFrame);
-	self.talentTabID = self:AddNamedTab(L["Raid"], self.RaidFrame);
 
     self.HideOtherItems:SetLabelText(L["Hide Others"])
 
@@ -79,19 +75,24 @@ function MPLM_MainFrameMixin:Init()
     self:SetupStatSearchDropdown()
     self:SetupSlotsDropdown()
     self:SetupHideOtherItemsCheckbox()
+    self:SetupTabs()
     self.SettingsButton:Init(self)
 end
 
+function MPLM_MainFrameMixin:GetCurrentFrame()
+    return self.tabIdToFrame[self:GetTab()]
+end
+
 function MPLM_MainFrameMixin:DoScan()
-    self.DungeonsFrame:DoScan()
+    self:GetCurrentFrame():DoScan()
 end
 
 function MPLM_MainFrameMixin:UpdateMatrix()
-    self.DungeonsFrame:UpdateMatrix()
+    self:GetCurrentFrame():UpdateMatrix()
 end
 
 function MPLM_MainFrameMixin:UpdateSearchGlow()
-    self.DungeonsFrame:UpdateSearchGlow()
+    self:GetCurrentFrame():UpdateSearchGlow()
 end
 
 function MPLM_MainFrameMixin:OnShow()
@@ -264,4 +265,22 @@ function MPLM_MainFrameMixin:SetupHideOtherItemsCheckbox()
 
 	self.HideOtherItems:SetControlChecked(self.hideOtherItems);
 	self.HideOtherItems:SetCallback(HideOtherItemsToggled);
+end
+
+function MPLM_MainFrameMixin:SetupTabs()
+    self:SetTabSystem(self.TabSystem)
+	self.dungeonsTabId = self:AddNamedTab(L["Dungeons"], self.DungeonsFrame)
+	self.raidTabId = self:AddNamedTab(L["Raid"], self.RaidFrame)
+
+    self.tabIdToFrame = {
+        [self.dungeonsTabId] = self.DungeonsFrame,
+        [self.raidTabId] = self.RaidFrame,
+    }
+
+    self:SetTab(self.dungeonsTabId)
+end
+
+function MPLM_MainFrameMixin:SetTab(tabId)
+    TabSystemOwnerMixin.SetTab(self, tabId)
+    self:DoScan()
 end

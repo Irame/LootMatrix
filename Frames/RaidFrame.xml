@@ -1,0 +1,41 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Script file="RaidFrame.lua" />
+
+    <Frame name="MPLM_RaidHeaderTemplate" mixin="MPLM_RaidHeaderMixin" inherits="MPLM_RowHeaderTemplate" virtual="true">
+        <Layers>
+            <Layer level="OVERLAY">
+                <Texture parentKey="Image">
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT"/>
+                    </Anchors>
+                </Texture>
+                <FontString parentKey="Label" inherits="SystemFont_Outline">
+                    <Anchors>
+                        <Anchor point="TOP"/>
+                        <Anchor point="LEFT"/>
+                        <Anchor point="RIGHT" relativeKey="$parent.Image"/>
+                        <Anchor point="BOTTOM" relativeKey="$parent.Image" relativePoint="TOP"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="RaidHighlight" hidden="true">
+                    <Color r="0.96" g="0.83" b="0.25" a="0.1"/>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" y="-2.5"/>
+                        <Anchor point="BOTTOMRIGHT" y="-2.5"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnSizeChanged method="OnSizeChanged"/>
+        </Scripts>
+    </Frame>
+
+    <Frame name="MPLM_RaidFrameTemplate" mixin="MPLM_RaidFrameMixin" inherits="MPLM_MatrixFrameTemplate" virtual="true">
+        <KeyValues>
+            <KeyValue key="rowTemplate" value="MPLM_RaidHeaderTemplate" type="string"/>
+        </KeyValues>
+    </Frame>
+</Ui>

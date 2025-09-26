@@ -58,6 +58,8 @@ function ItemButtonContainer:DoLayout()
     local dungeonHeaderLeft, dungeonHeaderBottom, dungeonHeaderWidth, dungeonHeaderHeight = self.dungeonHeader:GetRect()
     local slotHeaderLeft, slotHeaderBottom, slotHeaderWidth, slotHeaderHeight = self.slotHeader:GetRect()
 
+    if dungeonHeaderHeight == nil or slotHeaderWidth == nil then return end
+
     local width, height = slotHeaderWidth - 5, dungeonHeaderHeight - 5
     local itemIconSize = math.min(width/self.maxCols, height/self.maxRows)
     local centerX = slotHeaderLeft + 5 + width / 2 - parentLeft

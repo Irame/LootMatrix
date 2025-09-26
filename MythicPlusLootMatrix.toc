@@ -20,6 +20,7 @@ ItemButtonContainer.lua
 Frames/ItemButton.xml
 Frames/MatrixFrame.xml
 Frames/DungeonFrame.xml
+Frames/RaidFrame.xml
 Frames/MainFrame.xml
 
 Main.lua

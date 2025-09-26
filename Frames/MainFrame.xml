@@ -79,9 +79,9 @@
                     <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="BOTTOMRIGHT" x="-10" y="10"/>
                 </Anchors>
             </Frame>
-            <Frame parentKey="RaidFrame">
+            <Frame parentKey="RaidFrame" inherits="MPLM_RaidFrameTemplate">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="10" y="-70"/>
+                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="10" y="-90"/>
                     <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="BOTTOMRIGHT" x="-10" y="10"/>
                 </Anchors>
             </Frame>

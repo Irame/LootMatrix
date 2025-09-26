@@ -271,6 +271,8 @@ end
 
 ---@param matrixData MatrixFrames
 function MPLM_MatrixFrameMixin:LayoutMatrix(matrixData)
+    if not self:IsVisible() then return end
+
     local dividerSize = 5
     local rowStartY = 5 + 35
     local maxCellSize = 110
@@ -317,3 +319,19 @@ function MPLM_MatrixFrameMixin:LayoutMatrix(matrixData)
         end
     end
 end
+
+--- Gathers items from the encounter journal into the item cache and the provided itemIds table
+---@param itemIds number[]
+function MPLM_MatrixFrameMixin:GatherItemsFromJournal(itemIds)
+    for i = 1, EJ_GetNumLoot() do
+        local lootInfo = C_EncounterJournal.GetLootInfoByIndex(i)
+        if lootInfo and lootInfo.itemID and lootInfo.filterType ~= Enum.ItemSlotFilterType.Other then
+            tinsert(itemIds, lootInfo.itemID)
+
+            if lootInfo.name then
+                --private.addon:Print("Found loot: " .. lootInfo.name)
+                self.itemCache[lootInfo.itemID] = lootInfo
+            end
+        end
+    end
+end;

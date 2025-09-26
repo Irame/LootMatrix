@@ -88,20 +88,6 @@ local dungeonSplits = {
     }
 }
 
-function MPLM_DungeonFrameMixin:GatherItems(itemIds)
-    for i = 1, EJ_GetNumLoot() do
-        local lootInfo = C_EncounterJournal.GetLootInfoByIndex(i)
-        if lootInfo and lootInfo.itemID and lootInfo.filterType ~= Enum.ItemSlotFilterType.Other then
-            tinsert(itemIds, lootInfo.itemID)
-
-            if lootInfo.name then
-                --private.addon:Print("Found loot: " .. lootInfo.name)
-                self.itemCache[lootInfo.itemID] = lootInfo
-            end
-        end
-    end
-end;
-
 function MPLM_DungeonFrameMixin:GatherRowInfo()
     -- populates EncounterJournal global
     EncounterJournal_LoadUI()
@@ -148,7 +134,7 @@ function MPLM_DungeonFrameMixin:GatherRowInfo()
                 for _, encounterId in pairs(split.encounters) do
                     --private.addon:Print("Scanning encounter: " .. EJ_GetEncounterInfo(encounterId))
                     EJ_SelectEncounter(encounterId)
-                    self:GatherItems(itemIds)
+                    self:GatherItemsFromJournal(itemIds)
                 end
 
                 local dungeonInfo = C_LFGInfo.GetDungeonInfo(split.lfgDungeonId)
@@ -166,7 +152,7 @@ function MPLM_DungeonFrameMixin:GatherRowInfo()
             end
         else
             local itemIds = {}
-            self:GatherItems(itemIds)
+            self:GatherItemsFromJournal(itemIds)
 
             tinsert(dungeonInfos, {
                 id = instanceId,
