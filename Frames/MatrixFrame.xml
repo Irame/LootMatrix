@@ -1,0 +1,100 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Script file="MatrixFrame.lua" />
+
+    <Frame name="MPLM_RowHeaderTemplate" mixin="MPLM_RowHeaderMixin" virtual="true">
+        <Layers>
+            <Layer level="BORDER">
+                <Texture atlas="_UI-HUD-ActionBar-Frame-Divider-Threeslice-Center" useAtlasSize="true">
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" y="-9.5"/>
+                        <Anchor point="RIGHT"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="HighlightBackground" hidden="true">
+                    <Color r="1" g="1" b="1" a="0.08"/>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" y="-2.5"/>
+                        <Anchor point="BOTTOMRIGHT" y="-2.5"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnUpdate>
+                if self:IsMouseOver() then
+                    self.HighlightBackground:Show()
+                else
+                    self.HighlightBackground:Hide()
+                end
+            </OnUpdate>
+        </Scripts>
+    </Frame>
+
+    <Frame name="MPLM_SlotHeaderTemplate" mixin="MPLM_SlotHeaderMixin" virtual="true">
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="Label" inherits="GameFontNormal">
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="5"/>
+                        <Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BORDER">
+                <Texture atlas="!UI-HUD-ActionBar-Frame-Divider-ThreeSlice-Center" useAtlasSize="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="-3.5"/>
+                        <Anchor point="BOTTOM"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="HighlightBackground" hidden="true">
+                    <Color r="1" g="1" b="1" a="0.08"/>
+                    <Anchors>
+                        <Anchor point="TOP" relativeKey="$parent.Label" y="2"/>
+                        <Anchor point="LEFT" x="2.5"/>
+                        <Anchor point="BOTTOMRIGHT" x="2.5"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="SlotHighlight" hidden="true">
+                    <Color r="0.96" g="0.83" b="0.25" a="0.05"/>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" y="-2.5"/>
+                        <Anchor point="BOTTOMRIGHT" y="-2.5"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button inherits="MPLM_ItemButtonTemplate" parentKey="EquippedItem1Button">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativePoint="TOP" y="-7"/>
+                </Anchors>
+            </Button>
+            <Button inherits="MPLM_ItemButtonTemplate" parentKey="EquippedItem2Button">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOP" y="-7"/>
+                </Anchors>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnUpdate>
+                if self:IsMouseOver() then
+                    self.HighlightBackground:Show()
+                else
+                    self.HighlightBackground:Hide()
+                end
+            </OnUpdate>
+        </Scripts>
+    </Frame>
+
+    <Frame name="MPLM_MatrixFrameTemplate" mixin="MPLM_MatrixFrameMixin" virtual="true">
+        <Scripts>
+            <OnLoad method="OnLoad"/>
+            <OnSizeChanged method="OnSizeChanged"/>
+        </Scripts>
+    </Frame>
+</Ui>
