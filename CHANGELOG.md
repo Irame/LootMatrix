@@ -1,1 +1,2 @@
-- Fixed missing Items in PSF and Floodgate (and maybe other dungeons too)
+- Renamed the addon to LootMatrix (This causes the addon settings to be lost)
+- Added support for raid bosses
