@@ -109,7 +109,7 @@ local function GetDefaults()
 end
 
 function private:IntiializeDatabase()
-    self.db = LibStub("AceDB-3.0"):New("MythicPlusLootMatrixDB", GetDefaults(), true)
+    self.db = LibStub("AceDB-3.0"):New("LootMatrixDB", GetDefaults(), true)
 end
 
 local function GetActiveSlotKey(classId, specId)
