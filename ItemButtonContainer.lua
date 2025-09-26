@@ -8,14 +8,14 @@ local ItemButtonContainer = {}
 ---@param maxCols integer
 ---@param maxRows integer
 ---@param parent Frame
----@param dungeonHeader MPLM_DungeonHeader
+---@param rowHeader MPLM_RowHeader
 ---@param slotHeader MPLM_SlotHeader
-function ItemButtonContainer:Init(maxCols, maxRows, parent, dungeonHeader, slotHeader)
+function ItemButtonContainer:Init(maxCols, maxRows, parent, rowHeader, slotHeader)
     self.maxCols = maxCols
     self.maxRows = maxRows
 
     self.parent = parent
-    self.dungeonHeader = dungeonHeader
+    self.rowHeader = rowHeader
     self.slotHeader = slotHeader
 end
 
@@ -52,18 +52,18 @@ function ItemButtonContainer:Reset()
 end
 
 function ItemButtonContainer:DoLayout()
-    if not self.parent or not self.dungeonHeader or not self.slotHeader then return end
+    if not self.parent or not self.rowHeader or not self.slotHeader then return end
 
     local parentLeft, parentBottom, parentWidth, parentHeight = self.parent:GetRect()
-    local dungeonHeaderLeft, dungeonHeaderBottom, dungeonHeaderWidth, dungeonHeaderHeight = self.dungeonHeader:GetRect()
+    local rowHeaderLeft, rowHeaderBottom, rowHeaderWidth, rowHeaderHeight = self.rowHeader:GetRect()
     local slotHeaderLeft, slotHeaderBottom, slotHeaderWidth, slotHeaderHeight = self.slotHeader:GetRect()
 
-    if dungeonHeaderHeight == nil or slotHeaderWidth == nil then return end
+    if rowHeaderHeight == nil or slotHeaderWidth == nil then return end
 
-    local width, height = slotHeaderWidth - 5, dungeonHeaderHeight - 5
+    local width, height = slotHeaderWidth - 5, rowHeaderHeight - 5
     local itemIconSize = math.min(width/self.maxCols, height/self.maxRows)
     local centerX = slotHeaderLeft + 5 + width / 2 - parentLeft
-    local centerY = dungeonHeaderBottom + height / 2 - parentBottom
+    local centerY = rowHeaderBottom + height / 2 - parentBottom
 
     local buttonCount = #self.buttons
     local cols = math.min(math.ceil(math.sqrt(buttonCount)), self.maxCols)
