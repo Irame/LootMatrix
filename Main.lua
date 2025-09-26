@@ -15,6 +15,7 @@ function addon:OnInitialize()
     tinsert(UISpecialFrames, MPLM_MainFrame:GetName())
 
     self:RegisterChatCommand("mplm", "ChatCommandHandler");
+    self:RegisterChatCommand("lm", "ChatCommandHandler");
     private:IntiializeDatabase()
 end
 

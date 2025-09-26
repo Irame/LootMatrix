@@ -1,6 +1,6 @@
 ## Interface: 110200
-## Title: Mythic Plus Loot Matrix
-## Notes: Provides an overview of mythic plus loot.
+## Title: Loot Matrix
+## Notes: Provides an overview of mythic plus and raid loot.
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\MythicPlusLootMatrix\Images\Icon
 ## AddonCompartmentFunc: MPLM_OnAddonCompartmentClick

@@ -58,7 +58,7 @@ function MPLM_MainFrameMixin:OnLoad()
     TabSystemOwnerMixin.OnLoad(self)
 
     self:SetPortraitToAsset([[Interface\EncounterJournal\UI-EJ-PortraitIcon]])
-    self:SetTitle(L["Mythic+ Loot Matrix"])
+    self:SetTitle(L["Loot Matrix"])
 
     self.HideOtherItems:SetLabelText(L["Hide Others"])
 
@@ -269,8 +269,8 @@ end
 
 function MPLM_MainFrameMixin:SetupTabs()
     self:SetTabSystem(self.TabSystem)
-	self.dungeonsTabId = self:AddNamedTab(L["Dungeons"], self.DungeonsFrame)
-	self.raidTabId = self:AddNamedTab(L["Raid"], self.RaidFrame)
+	self.dungeonsTabId = self:AddNamedTab(DUNGEONS, self.DungeonsFrame)
+	self.raidTabId = self:AddNamedTab(RAID, self.RaidFrame)
 
     self.tabIdToFrame = {
         [self.dungeonsTabId] = self.DungeonsFrame,
