@@ -1,2 +1,1 @@
-- Renamed the addon to LootMatrix (This causes the addon settings to be lost)
-- Added support for raid bosses
+- Added DataBroker support 
