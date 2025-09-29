@@ -24,3 +24,4 @@ Frames/RaidFrame.xml
 Frames/MainFrame.xml
 
 Main.lua
+DataBrokerIntegration.lua
