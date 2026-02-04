@@ -99,7 +99,7 @@ end
 function LM_ItemButtonMixin:UpdateBorder()
     local _, _, itemQuality = C_Item.GetItemInfo(self.itemLink);
     itemQuality = itemQuality or Enum.ItemQuality.Epic;
-    if IsArtifactRelicItem(self.itemLink) then
+    if C_ItemSocketInfo.IsArtifactRelicItem(self.itemLink) then
         self.Border:SetTexture([[Interface\Artifacts\RelicIconFrame]]);
     else
         self.Border:SetTexture([[Interface\Common\WhiteIconFrame]]);
