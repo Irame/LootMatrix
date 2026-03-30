@@ -1,4 +1,4 @@
-## Interface: 120000
+## Interface: 120001
 ## Title: Loot Matrix
 ## Notes: Provides an overview of mythic plus and raid loot.
 ## Version: @project-version@
