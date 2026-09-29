@@ -1,1 +1,2 @@
-- fixed for 12.1.0
+- Added support for set pieces from tokens
+- Fixed dungeon short hands for midnight season 2
