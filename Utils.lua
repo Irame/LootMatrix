@@ -109,6 +109,7 @@ local function GetDefaults()
         },
         global = {
             useShortDungeonNames = false,
+            hideSetPieces = false,
         },
     }
 

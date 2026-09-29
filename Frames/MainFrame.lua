@@ -37,6 +37,14 @@ function LM_SettingsButtonMixin:OnClick()
                 private.db.global.useShortDungeonNames = not private.db.global.useShortDungeonNames
                 self.mainFrame:UpdateMatrix()
             end)
+        rootDescription:CreateCheckbox(L["Hide set pieces (raid only)"],
+            function ()
+                return private.db.global.hideSetPieces
+            end,
+            function ()
+                private.db.global.hideSetPieces = not private.db.global.hideSetPieces
+                self.mainFrame:DoScan()
+            end)
     end)
 end
 

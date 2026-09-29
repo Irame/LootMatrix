@@ -341,25 +341,27 @@ function LM_MatrixFrameMixin:GatherItemsFromJournal(itemIds)
         local lootInfo = C_EncounterJournal.GetLootInfoByIndex(i)
         if lootInfo and lootInfo.itemID and not lootInfo.displayAsPerPlayerLoot then
             if lootInfo.filterType == Enum.ItemSlotFilterType.Other then
-                local filterClassID, filterSpecID = EJ_GetLootFilter();
-                local items = private:GetItemsForToken(lootInfo.itemID, filterClassID, filterSpecID)
-                if items then
-                    for _, item in ipairs(items) do
-                        local itemID = item.itemID
-                        tinsert(itemIds, itemID)
+                if not private.db.global.hideSetPieces then
+                    local filterClassID, filterSpecID = EJ_GetLootFilter();
+                    local items = private:GetItemsForToken(lootInfo.itemID, filterClassID, filterSpecID)
+                    if items then
+                        for _, item in ipairs(items) do
+                            local itemID = item.itemID
+                            tinsert(itemIds, itemID)
 
-                        local itemObj = Item:CreateFromItemID(itemID)
-                        local itemFilterType = item.filterType
-                        itemObj:ContinueOnItemLoad(function()
-                            self.itemCache[itemID] = {
-                                itemID = itemID,
-                                link = itemObj:GetItemLink(),
-                                filterType = itemFilterType,
-                                icon = itemObj:GetItemIcon(),
-                            }
+                            local itemObj = Item:CreateFromItemID(itemID)
+                            local itemFilterType = item.filterType
+                            itemObj:ContinueOnItemLoad(function()
+                                self.itemCache[itemID] = {
+                                    itemID = itemID,
+                                    link = itemObj:GetItemLink(),
+                                    filterType = itemFilterType,
+                                    icon = itemObj:GetItemIcon(),
+                                }
 
-                            self:UpdateMatrixThrottled()
-                        end)
+                                self:UpdateMatrixThrottled()
+                            end)
+                        end
                     end
                 end
             else
