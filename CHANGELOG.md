@@ -1,2 +1,1 @@
-- Added support for set pieces from tokens
-- Fixed dungeon short hands for midnight season 2
+- All raids are now scanned, not only the last one
