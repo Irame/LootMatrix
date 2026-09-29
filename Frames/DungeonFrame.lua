@@ -51,7 +51,7 @@ function LM_DungeonFrameMixin:UpdateDungeonHighlight()
     local _, _, _, _, _, _, _, instanceID, _, _ = GetInstanceInfo()
     local itemButtonsOfHighlightedDungeon = nil
     for rowHeader, itemButtonsPerDungeon in pairs(self.matrixFrames.itemButtons) do
-        local dungeonHeader = rowHeader ---@type LM_DungeonHeader
+        local dungeonHeader = rowHeader --[[@as LM_DungeonHeader]]
         local dungeonHighlighted = instanceID == dungeonHeader.dungeonInfo.mapId
         dungeonHeader:SetDungeonHighlight(dungeonHighlighted)
 

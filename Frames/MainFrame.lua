@@ -282,5 +282,8 @@ end
 
 function LM_MainFrameMixin:SetTab(tabId)
     TabSystemOwnerMixin.SetTab(self, tabId)
-    self:DoScan()
+
+    if self:IsShown() then
+        self:DoScan()
+    end
 end

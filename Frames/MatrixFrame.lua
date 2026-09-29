@@ -50,6 +50,12 @@ function LM_SlotHeaderMixin:Reset()
     self.SlotHighlight:Hide()
 end
 
+---@class LM_ItemInfo
+---@field itemID integer
+---@field link string
+---@field filterType Enum.ItemSlotFilterType
+---@field icon integer
+
 ---@class LM_MatrixFrame : Frame
 ---@field rowTemplate? string
 LM_MatrixFrameMixin = {}
@@ -78,7 +84,7 @@ function LM_MatrixFrameMixin:OnLoad()
     self.itemButtonPool = CreateFramePool("Button", nil, "LM_ItemButtonTemplate", FramePoolDefaultReset)
     self.itemButtonContainerPool = CreateObjectPool(ItemButtonContainerPoolCreate, ObjectPoolDefaultReset)
 
-    ---@type table<number, EncounterJournalItemInfo>
+    ---@type table<number, LM_ItemInfo>
     self.itemCache = {}
 
     ---@type RowInfo[]
@@ -96,6 +102,14 @@ end
 function LM_MatrixFrameMixin:DoScan()
     self.rowInfos = self:GatherRowInfo()
     self:UpdateMatrix()
+end
+
+function LM_MatrixFrameMixin:UpdateMatrixThrottled()
+    if self.updateMatrixThrottleTimer then return end
+    self.updateMatrixThrottleTimer = C_Timer.NewTimer(0, function()
+        self.updateMatrixThrottleTimer = nil
+        self:UpdateMatrix()
+    end)
 end
 
 function LM_MatrixFrameMixin:UpdateMatrix()
@@ -178,7 +192,7 @@ function LM_MatrixFrameMixin:GetLootSlotsPresent()
 	return isLootSlotPresent;
 end
 
----@param itemInfo EncounterJournalItemInfo
+---@param itemInfo LM_ItemInfo
 function LM_MatrixFrameMixin:IsItemVisible(itemInfo)
     return itemInfo
         and itemInfo.filterType
@@ -325,12 +339,40 @@ end
 function LM_MatrixFrameMixin:GatherItemsFromJournal(itemIds)
     for i = 1, EJ_GetNumLoot() do
         local lootInfo = C_EncounterJournal.GetLootInfoByIndex(i)
-        if lootInfo and lootInfo.itemID and lootInfo.filterType ~= Enum.ItemSlotFilterType.Other then
-            tinsert(itemIds, lootInfo.itemID)
+        if lootInfo and lootInfo.itemID and not lootInfo.displayAsPerPlayerLoot then
+            if lootInfo.filterType == Enum.ItemSlotFilterType.Other then
+                local filterClassID, filterSpecID = EJ_GetLootFilter();
+                local items = private:GetItemsForToken(lootInfo.itemID, filterClassID, filterSpecID)
+                if items then
+                    for _, item in ipairs(items) do
+                        local itemID = item.itemID
+                        tinsert(itemIds, itemID)
 
-            if lootInfo.name then
-                --private.addon:Print("Found loot: " .. lootInfo.name)
-                self.itemCache[lootInfo.itemID] = lootInfo
+                        local itemObj = Item:CreateFromItemID(itemID)
+                        local itemFilterType = item.filterType
+                        itemObj:ContinueOnItemLoad(function()
+                            self.itemCache[itemID] = {
+                                itemID = itemID,
+                                link = itemObj:GetItemLink(),
+                                filterType = itemFilterType,
+                                icon = itemObj:GetItemIcon(),
+                            }
+
+                            self:UpdateMatrixThrottled()
+                        end)
+                    end
+                end
+            else
+                tinsert(itemIds, lootInfo.itemID)
+
+                if lootInfo.name then
+                    self.itemCache[lootInfo.itemID] = {
+                        itemID = lootInfo.itemID,
+                        link = lootInfo.link,
+                        filterType = lootInfo.filterType,
+                        icon = lootInfo.icon,
+                    }
+                end
             end
         end
     end

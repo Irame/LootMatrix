@@ -13,6 +13,8 @@ locales.xml
 
 Utils.lua
 
+SetTokenData.lua
+
 # Classes
 ItemButtonContainer.lua
 

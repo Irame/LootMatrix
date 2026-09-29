@@ -12,7 +12,7 @@ local private = select(2, ...)
 ---@field SpellActivationAlert? ActionButtonSpellAlertTemplate
 LM_ItemButtonMixin = {}
 
----@param itemInfoOrLink? EncounterJournalItemInfo | string
+---@param itemInfoOrLink? LM_ItemInfo | string
 function LM_ItemButtonMixin:Init(itemInfoOrLink)
     local function FinishInit()
         self:UpdateStats()
