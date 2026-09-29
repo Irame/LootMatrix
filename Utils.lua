@@ -14,6 +14,17 @@ private.statsShortened = {
 
 ---@type table<integer, string>
 private.dungeonShorthands = {
+	-- #region MID: Season 2
+    [1322] = "AOF",
+    [1311] = "DON",
+    [1304] = "MR",
+    [1309] = "BV",
+    [1313] = "VSA",
+    [1041] = "KR",
+    [1202] = "RLP",
+    [1030] = "TOS",
+    -- #endregion
+
     [1272] = "BREW",
     [1210] = "DFC",
     [1267] = "PSF",
