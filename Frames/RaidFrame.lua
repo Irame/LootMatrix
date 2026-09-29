@@ -59,57 +59,53 @@ function LM_RaidFrameMixin:GatherRowInfo()
     local bossInfos = {}
 
     local instanceIdx = 0
-    local instanceId
     while true do
         instanceIdx = instanceIdx + 1
-        local nextInstanceId  = EJ_GetInstanceByIndex(instanceIdx, true)
+        local instanceId  = EJ_GetInstanceByIndex(instanceIdx, true)
 
-        if not nextInstanceId then
+        if not instanceId then
             break
         end
-
-        instanceId = nextInstanceId
 
         if not firstInstanceId then
             firstInstanceId = instanceId
         end
-    end
 
-    if not instanceId then
-        return bossInfos
-    end
+        EJ_SelectInstance(instanceId)
 
-    EJ_SelectInstance(instanceId)
+        -- this filters out world bosses
+        if EJ_IsValidInstanceDifficulty(DifficultyUtil.ID.PrimaryRaidHeroic) then
+            EJ_SetDifficulty(DifficultyUtil.ID.PrimaryRaidHeroic)
 
-    EJ_SetDifficulty(DifficultyUtil.ID.PrimaryRaidHeroic)
+            --private.addon:Print("Scanning instance: " .. instanceId)
 
-    --private.addon:Print("Scanning instance: " .. instanceId)
+            local bossIdx = 0
+            while true do
+                bossIdx = bossIdx + 1
 
-    local bossIdx = 0
-    while true do
-        bossIdx = bossIdx + 1
+                local name, description, journalEncounterID, rootSectionID, link, journalInstanceID, dungeonEncounterID, instanceID = EJ_GetEncounterInfoByIndex(bossIdx, instanceId)
 
-        local name, description, journalEncounterID, rootSectionID, link, journalInstanceID, dungeonEncounterID, instanceID = EJ_GetEncounterInfoByIndex(bossIdx, instanceId)
+                if not journalEncounterID then
+                    break
+                end
 
-        if not journalEncounterID then
-            break
+                local bossImage = select(5, EJ_GetCreatureInfo(1, journalEncounterID)) or "Interface\\EncounterJournal\\UI-EJ-BOSS-Default";
+
+                EJ_SelectEncounter(journalEncounterID)
+
+                local itemIds = {}
+                self:GatherItemsFromJournal(itemIds)
+
+                tinsert(bossInfos, {
+                    id = instanceId,
+                    index = instanceIdx,
+                    tier = EJ_GetCurrentTier(),
+                    name = name,
+                    imageId = bossImage,
+                    loot = itemIds,
+                })
+            end
         end
-
-        local bossImage = select(5, EJ_GetCreatureInfo(1, journalEncounterID)) or "Interface\\EncounterJournal\\UI-EJ-BOSS-Default";
-
-        EJ_SelectEncounter(journalEncounterID)
-
-        local itemIds = {}
-        self:GatherItemsFromJournal(itemIds)
-
-        tinsert(bossInfos, {
-            id = instanceId,
-            index = instanceIdx,
-            tier = EJ_GetCurrentTier(),
-            name = name,
-            imageId = bossImage,
-            loot = itemIds,
-        })
     end
 
     -- woraround to keep the raid journal working
