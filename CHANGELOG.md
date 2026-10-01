@@ -1,1 +1,1 @@
-- All raids are now scanned, not only the last one
+- Added basic skinning for EllesmereUI
