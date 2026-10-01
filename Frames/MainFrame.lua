@@ -1,3 +1,6 @@
+---@type string
+local addonName = ...
+
 ---@class LM_Private
 local private = select(2, ...)
 
@@ -85,6 +88,26 @@ function LM_MainFrameMixin:Init()
     self:SetupHideOtherItemsCheckbox()
     self:SetupTabs()
     self.SettingsButton:Init(self)
+
+    if EllesmereUI and EllesmereUI.RegisterSkin then
+        EllesmereUI.RegisterSkin(addonName, function(S)
+            print(self, self.IsForbidden)
+            S.Shell(self)
+            S.Dropdown(self.Stat1Search)
+            S.Dropdown(self.Stat2Search)
+            S.Dropdown(self.SlotSelect)
+            S.Dropdown(self.Filter)
+            S.Checkbox(self.HideOtherItems.Button)
+            S.CloseButton(self.CloseButton)
+            for _, tab in pairs(self.TabSystem.tabs) do
+                S.Tab(tab)
+            end
+        end)
+    end
+end
+
+function LM_MainFrameMixin:IsForbidden()
+    return false
 end
 
 function LM_MainFrameMixin:GetCurrentFrame()
