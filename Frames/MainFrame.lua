@@ -91,7 +91,6 @@ function LM_MainFrameMixin:Init()
 
     if EllesmereUI and EllesmereUI.RegisterSkin then
         EllesmereUI.RegisterSkin(addonName, function(S)
-            print(self, self.IsForbidden)
             S.Shell(self)
             S.Dropdown(self.Stat1Search)
             S.Dropdown(self.Stat2Search)
