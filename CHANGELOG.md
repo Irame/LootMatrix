@@ -1,1 +1,4 @@
-- Added basic skinning for EllesmereUI
+- Hide Others is now a dropdown which has the following states:
+  - Show All: Shows all items.
+  - Only Matches: Shows both partial and full stat matches.
+  - Only Full Matches: Shows only full stat matches.
