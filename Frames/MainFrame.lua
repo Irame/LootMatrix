@@ -57,8 +57,8 @@ end
 ---@field ResizeButton PanelResizeButtonTemplate
 ---@field Stat1Search WowStyle1DropdownTemplate
 ---@field Stat2Search WowStyle1DropdownTemplate
+---@field HideOption WowStyle1DropdownTemplate
 ---@field SlotSelect WowStyle1DropdownTemplate
----@field HideOtherItems ResizeCheckButtonTemplate
 ---@field SettingsButton LM_SettingsButton
 ---@field DungeonsFrame LM_DungeonFrame
 ---@field RaidFrame LM_RaidFrame
@@ -71,21 +71,21 @@ function LM_MainFrameMixin:OnLoad()
     self:SetPortraitToAsset([[Interface\EncounterJournal\UI-EJ-PortraitIcon]])
     self:SetTitle(L["Loot Matrix"])
 
-    self.HideOtherItems:SetLabelText(L["Hide Others"])
-
     self:RegisterEvent("EJ_LOOT_DATA_RECIEVED")
 
     self.ResizeButton:Init(self, 1100, 670, 1100*1.5, 670*1.5);
 end
 
 function LM_MainFrameMixin:Init()
+    self.hideOption = private.hideOptions.showAll;
+
     -- this is required for the SpellBookItemAutoCastTemplate to be available
     PlayerSpellsFrame_LoadUI();
 
     self:SetupFilterDropdown()
     self:SetupStatSearchDropdown()
     self:SetupSlotsDropdown()
-    self:SetupHideOtherItemsCheckbox()
+    self:SetupHideOptionDropdown()
     self:SetupTabs()
     self.SettingsButton:Init(self)
 
@@ -96,7 +96,7 @@ function LM_MainFrameMixin:Init()
             S.Dropdown(self.Stat2Search)
             S.Dropdown(self.SlotSelect)
             S.Dropdown(self.Filter)
-            S.Checkbox(self.HideOtherItems.Button)
+            S.Dropdown(self.HideOption)
             S.CloseButton(self.CloseButton)
             for _, tab in pairs(self.TabSystem.tabs) do
                 S.Tab(tab)
@@ -214,7 +214,7 @@ end
 
 function LM_MainFrameMixin:SetupStatSearchDropdown()
     local function UpdateOnSelection()
-        if self.hideOtherItems then
+        if self.hideOption > 0 then
             self:UpdateMatrix()
         else
             self:UpdateSearchGlow()
@@ -287,14 +287,37 @@ function LM_MainFrameMixin:SetupSlotsDropdown()
     end);
 end
 
-function LM_MainFrameMixin:SetupHideOtherItemsCheckbox()
-    local function HideOtherItemsToggled()
-        self.hideOtherItems = not self.hideOtherItems
+function LM_MainFrameMixin:SetupHideOptionDropdown()
+    local function IsSelected(value)
+        return self.hideOption == value
+    end
+
+    local function SetSelected(value)
+        self.hideOption = value
         self:UpdateMatrix()
     end
 
-	self.HideOtherItems:SetControlChecked(self.hideOtherItems);
-	self.HideOtherItems:SetCallback(HideOtherItemsToggled);
+    self.HideOption:SetupMenu(function(dropdown, rootDescription)
+        rootDescription:CreateRadio(L["Show All"], IsSelected, SetSelected, private.hideOptions.showAll);
+        rootDescription:CreateRadio(L["Only Matches"], IsSelected, SetSelected, private.hideOptions.onlyShowMatches);
+        rootDescription:CreateRadio(L["Only Full Matches"], IsSelected, SetSelected, private.hideOptions.onlyShowFullMatches);
+    end);
+
+    self.HideOption:RegisterForMouse("LeftButtonDown", "RightButtonDown")
+
+    local function Cycle(step)
+        local nextOption = (self.hideOption + step) % private.hideOptionsCount
+        SetSelected(nextOption)
+        self.HideOption:GenerateMenu()  -- rebuilds the menu so the displayed text/radio state updates
+    end
+
+    self.HideOption:HookScript("OnMouseDown", function(this, button)
+        if button == "RightButton" then
+            -- close the menu if the template just opened it
+            if this:IsMenuOpen() then this:CloseMenu() end
+            Cycle(IsShiftKeyDown() and -1 or 1)  -- shift+right click goes backwards
+        end
+    end)
 end
 
 function LM_MainFrameMixin:SetupTabs()

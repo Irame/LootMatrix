@@ -19,15 +19,11 @@
                     <Anchor point="LEFT" relativeKey="$parent.Stat1Search" relativePoint="RIGHT" x="10"/>
                 </Anchors>
             </DropdownButton>
-            <Frame parentKey="HideOtherItems" inherits="ResizeCheckButtonTemplate">
-                <KeyValues>
-                    <KeyValue key="labelFont" value="GameFontNormalMed2" type="string"/>
-                    <KeyValue key="disabledLabelFont" value="GameFontDisableMed2" type="string"/>
-                </KeyValues>
+            <DropdownButton parentKey="HideOption" inherits="WowStyle1DropdownTemplate">
                 <Anchors>
                     <Anchor point="LEFT" relativeKey="$parent.Stat2Search" relativePoint="RIGHT" x="10"/>
                 </Anchors>
-            </Frame>
+            </DropdownButton>
             <DropdownButton parentKey="SlotSelect" inherits="WowStyle1DropdownTemplate">
                 <Anchors>
                     <Anchor point="LEFT" relativeKey="$parent.Stat2Search" relativePoint="RIGHT" x="230"/>

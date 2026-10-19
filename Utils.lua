@@ -96,6 +96,13 @@ private.slotFilterOrdered = {
     Enum.ItemSlotFilterType.OffHand,
 }
 
+private.hideOptions = {
+    showAll = 0,
+    onlyShowMatches = 1,
+    onlyShowFullMatches = 2,
+}
+private.hideOptionsCount = 3
+
 -- db utils
 
 local function GetDefaults()

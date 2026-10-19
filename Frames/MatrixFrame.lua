@@ -126,9 +126,9 @@ function LM_MatrixFrameMixin:OnSizeChanged()
 end
 
 ---@param itemLink string
----@return integer|true|false|nil matchResult 2 = strong match, 1 = weak match, true = all stats match, false = no match, nil = invalid item link
+---@return integer matchResult 2 = strong match, 1 = weak match, 0 = no match / invalid item link
 function LM_MatrixFrameMixin:MatchWithStatSearch(itemLink)
-    if not itemLink then return nil end
+    if not itemLink then return 0 end
 
     -- different behaviour if both stat search boxes are set to the same value
     -- then we have a strong match if the higher stat is the selected stat
@@ -138,12 +138,11 @@ function LM_MatrixFrameMixin:MatchWithStatSearch(itemLink)
         local orderedStats = private:GetSortedStatsInfo(itemLink)
         if orderedStats[1] and orderedStats[1].statKey == searchValue then return 2 end
         if orderedStats[2] and orderedStats[2].statKey == searchValue then return 1 end
-        return false
+        return 0
     else
         local stats = C_Item.GetItemStats(itemLink)
-        if not stats then return nil end
-        local result = (stats[private.db.char.stat1SearchValue] and 1 or 0) + (stats[private.db.char.stat2SearchValue] and 1 or 0)
-        return result > 0 and result or (not private.db.char.stat1SearchValue or not private.db.char.stat2SearchValue)
+        if not stats then return 0 end
+        return (stats[private.db.char.stat1SearchValue] and 1 or 0) + (stats[private.db.char.stat2SearchValue] and 1 or 0)
     end
 end
 
@@ -198,7 +197,7 @@ function LM_MatrixFrameMixin:IsItemVisible(itemInfo)
         and itemInfo.filterType
         and itemInfo.link
         and private:IsSlotActive(itemInfo.filterType)
-        and (not self.parent.hideOtherItems or self:MatchWithStatSearch(itemInfo.link))
+        and self:MatchWithStatSearch(itemInfo.link) >= self.parent.hideOption
         and true or false
 end
 
